@@ -34,6 +34,49 @@ form.addEventListener("submit", function (event) {
     greeting.textContent = `Welcome, ${name} from ${teamName}!`;
     greeting.className = "success-message";
     greeting.style.display = "block";
+
+    // If attendance reaches max, show celebration and winning team
+    if (count === maxCount) {
+      // Get team counts
+      const waterCount = parseInt(
+        document.getElementById("waterCount").textContent
+      );
+      const zeroCount = parseInt(
+        document.getElementById("zeroCount").textContent
+      );
+      const powerCount = parseInt(
+        document.getElementById("powerCount").textContent
+      );
+      let winningTeam = "";
+      let winningEmoji = "";
+      let winningCardId = "";
+      if (waterCount >= zeroCount && waterCount >= powerCount) {
+        winningTeam = "Team Water Wise";
+        winningEmoji = "🌊";
+        winningCardId = "water";
+      } else if (zeroCount >= waterCount && zeroCount >= powerCount) {
+        winningTeam = "Team Net Zero";
+        winningEmoji = "🌿";
+        winningCardId = "zero";
+      } else {
+        winningTeam = "Team Renewables";
+        winningEmoji = "⚡";
+        winningCardId = "power";
+      }
+      greeting.textContent = `🎉 All 50 attendees checked in! ${winningEmoji} ${winningTeam} has the most members! 🎉`;
+      greeting.className = "success-message";
+      greeting.style.display = "block";
+      // Highlight winning team card
+      document.querySelectorAll(".team-card").forEach(function (card) {
+        card.style.border = "none";
+        card.style.boxShadow = "none";
+      });
+      const winnerCard = document.querySelector(`.team-card.${winningCardId}`);
+      if (winnerCard) {
+        winnerCard.style.border = "3px solid gold";
+        winnerCard.style.boxShadow = "0 0 18px gold";
+      }
+    }
   }
   form.reset(); // Reset form fields
 });
